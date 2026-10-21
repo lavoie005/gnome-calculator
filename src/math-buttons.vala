@@ -20,6 +20,13 @@ public enum ButtonMode
 
 public class MathButtons : Adw.Bin
 {
+    // ==========================================
+    // VOLATILE MEMORY STATE & VARIABLES
+    // ==========================================
+    private Number memory_value = new Number.integer (0);// Stores the current numerical value held in calculator memory (non-persistent).
+    private bool has_memory = false;// Tracks whether the memory currently holds a stored value (used for button sensitivity).
+    //===============================
+
     public MathEquation equation { get; construct set; }
     public MathConverter converter { get; construct set; }
 
@@ -79,6 +86,12 @@ public class MathButtons : Adw.Bin
         {"clear",                on_clear                                },
         {"solve",                on_solve                                },
         {"set-number-mode",      on_set_number_mode,      "s", "'normal'"},
+        // --- Memory Action Bindings ---
+        {"memory-clear",          on_memory_clear                           },
+        {"memory-recall",         on_memory_recall                          },
+        {"memory-store",          on_memory_store                           },
+        {"memory-add",            on_memory_add                             },
+        {"memory-subtract",       on_memory_subtract                        },
     };
 
     public signal void currency_conversion();
@@ -110,6 +123,8 @@ public class MathButtons : Adw.Bin
         equation.notify["number-mode"].connect (number_mode_changed_cb);
         equation.notify["display"].connect (equation_display_changed_cb);
         number_mode_changed_cb ();
+
+        update_memory_actions (); // Sets initial grayed-out state on startup
     }
 
     private void update_buttons ()
@@ -263,6 +278,134 @@ public class MathButtons : Adw.Bin
         equation.solve ();
         solved_using_button = true;
     }
+
+    // ==========================================
+    // MEMORY HELPER & CALLBACK METHODS
+    // ==========================================
+
+    /**
+     * Automatically grays out (disables) or lights up (enables)
+     * the Memory Clear (MC) and Memory Recall (MR) buttons
+     * depending on whether memory is empty or contains a value.
+     */
+    private void update_memory_actions ()
+    {
+        if (action_group == null)
+            return;
+
+        var mc_action = action_group.lookup_action ("memory-clear") as SimpleAction;
+        var mr_action = action_group.lookup_action ("memory-recall") as SimpleAction;
+
+        if (mc_action != null)
+            mc_action.set_enabled (has_memory);
+        if (mr_action != null)
+            mr_action.set_enabled (has_memory);
+    }
+
+    /**
+     * MC (Memory Clear): Resets memory back to zero and disables MC/MR buttons.
+     */
+    private void on_memory_clear ()
+    {
+        memory_value = new Number.integer (0);
+        has_memory = false;
+        update_memory_actions ();
+    }
+
+    /**
+     * MR (Memory Recall): Displays the stored memory value on screen.
+     */
+    private void on_memory_recall ()
+    {
+        if (has_memory)
+        {
+            equation.set (equation.serializer.to_string (memory_value));
+            equation.solve ();
+        }
+    }
+
+    /**
+     * MS (Memory Store): Saves the current displayed value into memory,
+     * clears lingering expression history, and forces the next keystroke
+     * to start a fresh input (preventing string appending like "108").
+     */
+    private void on_memory_store ()
+    {
+        if (equation.number != null)
+        {
+            memory_value = equation.number;
+            has_memory = true;
+
+            // 1. Convert current number to string and rewrite it to the equation buffer
+            //    This destroys any trailing operator history so math never repeats.
+            string val_str = equation.serializer.to_string (memory_value);
+            equation.set (val_str);
+
+            // 2. Put calculator into "Result Mode" so typing a new digit clears the screen
+            equation.solve ();
+
+            update_memory_actions ();
+        }
+    }
+
+    /**
+     * M+ (Memory Add): Adds the currently displayed value to memory,
+     * updates state, and resets the input buffer for fresh typing.
+     */
+    private void on_memory_add ()
+    {
+        if (equation.number == null)
+            return;
+
+        var val = equation.number;
+
+        if (!has_memory)
+        {
+            memory_value = val;
+            has_memory = true;
+        }
+        else
+        {
+            memory_value = memory_value.add (val);
+        }
+
+        // Lock display value, clear lingering history, and make next input fresh
+        string val_str = equation.serializer.to_string (val);
+        equation.set (val_str);
+        equation.solve ();
+
+        update_memory_actions ();
+    }
+
+    /**
+     * M- (Memory Subtract): Subtracts the currently displayed value from memory,
+     * updates state, and resets the input buffer for fresh typing.
+     */
+    private void on_memory_subtract ()
+    {
+        if (equation.number == null)
+            return;
+
+        var val = equation.number;
+
+        if (!has_memory)
+        {
+            memory_value = new Number.integer (0).subtract (val);
+            has_memory = true;
+        }
+        else
+        {
+            memory_value = memory_value.subtract (val);
+        }
+
+        // Lock display value, clear lingering history, and make next input fresh
+        string val_str = equation.serializer.to_string (val);
+        equation.set (val_str);
+        equation.solve ();
+
+        update_memory_actions ();
+    }
+    //=======================
 
     private void on_set_number_mode (SimpleAction action, Variant? param)
     {

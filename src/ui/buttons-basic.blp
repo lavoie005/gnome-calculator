@@ -15,6 +15,85 @@ template $BasicButtonPanel: Adw.Bin {
       "buttons",
     ]
 
+    Button calc_mc_button {
+      label: "MC";
+      focus-on-click: false;
+      tooltip-text: _("Memory Clear");
+      action-name: "cal.memory-clear";
+
+      styles [
+        "function-button",
+      ]
+
+      layout {
+        column: "0";
+        row: "0";
+      }
+    }
+
+    Button calc_mr_button {
+      label: "MR";
+      focus-on-click: false;
+      tooltip-text: _("Memory Recall");
+      action-name: "cal.memory-recall";
+
+      styles [
+        "function-button",
+      ]
+
+      layout {
+        column: "1";
+        row: "0";
+      }
+    }
+
+    Button calc_m_plus_button {
+      label: "M+";
+      focus-on-click: false;
+      tooltip-text: _("Memory Add");
+      action-name: "cal.memory-add";
+
+      styles [
+        "function-button",
+      ]
+
+      layout {
+        column: "2";
+        row: "0";
+      }
+    }
+
+    Button calc_m_minus_button {
+      label: "M-";
+      focus-on-click: false;
+      tooltip-text: _("Memory Subtract");
+      action-name: "cal.memory-subtract";
+
+      styles [
+        "function-button",
+      ]
+
+      layout {
+        column: "3";
+        row: "0";
+      }
+    }
+
+    Button calc_ms_button {
+      label: "MS";
+      focus-on-click: false;
+      tooltip-text: _("Memory Store");
+      action-name: "cal.memory-store";
+
+      styles [
+      "function-button"
+      ]
+
+      layout {
+      column: "4"; row: "0";
+      }
+    }
+
     Button calc_clear_button {
       label: "C";
       focus-on-click: false;
@@ -27,7 +106,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "0";
-        row: "0";
+        row: "1";
       }
     }
 
@@ -44,7 +123,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "1";
-        row: "0";
+        row: "1";
       }
     }
 
@@ -61,7 +140,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "2";
-        row: "0";
+        row: "1";
       }
     }
 
@@ -77,7 +156,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "0";
-        row: "1";
+        row: "2";
       }
     }
 
@@ -93,7 +172,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "1";
-        row: "1";
+        row: "2";
       }
     }
 
@@ -109,7 +188,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "2";
-        row: "1";
+        row: "2";
       }
     }
 
@@ -125,7 +204,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "0";
-        row: "2";
+        row: "3";
       }
     }
 
@@ -141,7 +220,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "1";
-        row: "2";
+        row: "3";
       }
     }
 
@@ -157,7 +236,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "2";
-        row: "2";
+        row: "3";
       }
     }
 
@@ -173,7 +252,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "0";
-        row: "3";
+        row: "4";
       }
     }
 
@@ -189,7 +268,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "1";
-        row: "3";
+        row: "4";
       }
     }
 
@@ -205,7 +284,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "2";
-        row: "3";
+        row: "4";
       }
     }
 
@@ -221,7 +300,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "0";
-        row: "4";
+        row: "5";
       }
     }
 
@@ -236,7 +315,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "1";
-        row: "4";
+        row: "5";
       }
     }
 
@@ -254,7 +333,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "2";
-        row: "4";
+        row: "5";
       }
     }
 
@@ -271,7 +350,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "3";
-        row: "4";
+        row: "5";
       }
     }
 
@@ -288,7 +367,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "3";
-        row: "0";
+        row: "1";
       }
     }
 
@@ -305,7 +384,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "3";
-        row: "1";
+        row: "2";
       }
     }
 
@@ -321,7 +400,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "3";
-        row: "2";
+        row: "3";
       }
     }
 
@@ -338,7 +417,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "3";
-        row: "3";
+        row: "4";
       }
     }
 
@@ -355,7 +434,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "4";
-        row: "0";
+        row: "1";
       }
     }
 
@@ -372,7 +451,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "4";
-        row: "1";
+        row: "2";
       }
     }
 
@@ -389,7 +468,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "4";
-        row: "2";
+        row: "3";
       }
     }
 
@@ -406,7 +485,7 @@ template $BasicButtonPanel: Adw.Bin {
 
       layout {
         column: "4";
-        row: "3";
+        row: "4";
         row-span: "2";
       }
     }
